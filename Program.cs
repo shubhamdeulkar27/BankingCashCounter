@@ -9,6 +9,7 @@ namespace BankingCashCounter
         private const int WITHDRAW = 1;
         private const int ADD_CUSTOMER = 2;
         private const int DETAIL = 3;
+        private const int REMOVE_CUSTOMER = 4;
         private const int EXIT = 9;
         private const int MINIMUM_BALANCE = 500;
 
@@ -25,12 +26,14 @@ namespace BankingCashCounter
             Customer customer = new Customer();
             while (true)
             {
+                Console.WriteLine("-----------------------");
                 try
                 {
                     Console.WriteLine("Enter 0 to Deposite");
                     Console.WriteLine("Enter 1 to Withdraw");
                     Console.WriteLine("Enter 2 to Add Customer");
                     Console.WriteLine("Enter 3 to View Account Detail");
+                    Console.WriteLine("Enter 4 to Remove Customer");
                     Console.WriteLine("Enter 9 to Exit");
                     choice = Int32.Parse(Console.ReadLine());
                 }
@@ -55,6 +58,9 @@ namespace BankingCashCounter
                         break;
                     case DETAIL:
                         program.ShowDetail(ref list);
+                        break;
+                    case REMOVE_CUSTOMER:
+                        program.RemoveCustomer(ref list);
                         break;
                     default:
                         Console.WriteLine("Invalid Choice ");
@@ -151,12 +157,22 @@ namespace BankingCashCounter
             
         }
 
+        public void RemoveCustomer(ref LinkedList list)
+        {
+            Console.WriteLine("Enter Account Number");
+            accountNumber = Int32.Parse(Console.ReadLine());
+            Customer customer = list.Search(accountNumber);
+            list.Remove(customer);
+            Console.WriteLine($"Account of Number {customer.AccountNumber} Deleted");
+        }
+
         /// <summary>
         /// Function to Show Account Detail.
         /// </summary>
         /// <param name="list"></param>
         public void ShowDetail(ref LinkedList list)
         {
+            Console.WriteLine("-----------------------");
             try
             {
                 Console.WriteLine("Enter Account Number");

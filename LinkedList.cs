@@ -61,23 +61,35 @@ public class LinkedList
 
 	public Customer Search(int accountNumber)
 	{
-		Node temporary = head;
-		while (temporary.Next != null)
+		try
 		{
-			if (temporary.Data.AccountNumber == accountNumber)
+			Node temporary = head;
+			if (temporary != null)
 			{
-				break;
+				while (temporary.Next != null)
+				{
+					if (temporary.Data.AccountNumber == accountNumber)
+					{
+						break;
+					}
+					temporary = temporary.Next;
+				}
+				if (temporary.Data.AccountNumber == accountNumber)
+				{
+					return temporary.Data;
+				}
 			}
-			temporary = temporary.Next;
+			else
+			{
+				
+				return null;
+			}
 		}
-		if (temporary.Data.AccountNumber == accountNumber)
+		catch (System.NullReferenceException exception)
 		{
-			return temporary.Data;
+			Console.WriteLine(exception.Message);
 		}
-		else
-		{
-			return null;
-		}
+		return null;
 		
 	}
 
