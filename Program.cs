@@ -26,6 +26,7 @@ namespace BankingCashCounter
             Program program = new Program();
             Customer customer = new Customer();
             Queue queue = new Queue();
+            Stack stack = new Stack();
             while (true)
             {
                 Console.WriteLine("-----------------------");
@@ -44,15 +45,15 @@ namespace BankingCashCounter
                     }
                     Console.WriteLine("Enter Account Number");
                     accountNumber = Int32.Parse(Console.ReadLine());
-                    queue.Enque(accountNumber);
+                    queue.Enque(accountNumber);                 //Calling Enque to add Customers account number to queue.
+                    stack.Push(accountNumber);                  //Calling Push yo push Customers account number to stcak. 
                 }
                 catch (System.FormatException e)
                 {
                     Console.WriteLine(e.Message);
                 }
                 
-
-                switch (choice)
+                switch (choice)                                 //Switch Choice for Operation.
                 {
                     case DEPOSIT:
                         program.Deposit(ref list,accountNumber);
@@ -73,7 +74,8 @@ namespace BankingCashCounter
                         Console.WriteLine("Invalid Choice ");
                         break;
                 }
-                queue.Deque();
+                queue.Deque();              //calling Deque to remove account number from queue.
+                stack.Pop();                //calling Pop to pop out the account number form stack.
             }
 
         }
