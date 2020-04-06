@@ -17,6 +17,7 @@ namespace BankingCashCounter
         private static int choice = 0;
         private static int amount = 0;
         private static int accountNumber;
+
         /// <summary>
         /// Function to perform the transactions.
         /// </summary>
@@ -24,6 +25,7 @@ namespace BankingCashCounter
         {
             Program program = new Program();
             Customer customer = new Customer();
+            Queue queue = new Queue();
             while (true)
             {
                 Console.WriteLine("-----------------------");
@@ -36,57 +38,61 @@ namespace BankingCashCounter
                     Console.WriteLine("Enter 4 to Remove Customer");
                     Console.WriteLine("Enter 9 to Exit");
                     choice = Int32.Parse(Console.ReadLine());
+                    if (choice == EXIT)
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Enter Account Number");
+                    accountNumber = Int32.Parse(Console.ReadLine());
+                    queue.Enque(accountNumber);
                 }
                 catch (System.FormatException e)
                 {
                     Console.WriteLine(e.Message);
                 }
-                if (choice == EXIT)
-                {
-                    break;
-                }
+                
+
                 switch (choice)
                 {
                     case DEPOSIT:
-                        program.Deposit(ref list);
+                        program.Deposit(ref list,accountNumber);
                         break;
                     case WITHDRAW:
-                        program.Withdraw(ref list);
+                        program.Withdraw(ref list, accountNumber);
                         break;
                     case ADD_CUSTOMER:
-                        program.AddCustomer(ref list);
+                        program.AddCustomer(ref list, accountNumber);
                         break;
                     case DETAIL:
-                        program.ShowDetail(ref list);
+                        program.ShowDetail(ref list, accountNumber);
                         break;
                     case REMOVE_CUSTOMER:
-                        program.RemoveCustomer(ref list);
+                        program.RemoveCustomer(ref list, accountNumber);
                         break;
                     default:
                         Console.WriteLine("Invalid Choice ");
                         break;
                 }
-                
+                queue.Deque();
             }
+
         }
 
         /// <summary>
         /// Function for Deposit money to account.
         /// </summary>
         /// <param name="customer"></param>
-        public void Deposit(ref LinkedList list)
+        public void Deposit(ref LinkedList list,int accountNumber)
         {
             try
             {
-                Console.WriteLine("Enter Account Number");
-                accountNumber = Int32.Parse(Console.ReadLine());
                 Customer customer=list.Search(accountNumber);
                 if (customer != null)
                 {
                     Console.WriteLine("Enter Amount");
                     amount = Int32.Parse(Console.ReadLine());
                     customer.Balance = customer.Balance + amount;
-                    Console.WriteLine($"Updated Account Balance is {customer.Balance}");
+                    Console.WriteLine($"Updated Account Balance for ACC. NO. {customer.AccountNumber}  is {customer.Balance}");
                 }
                 else
                 {
@@ -103,12 +109,10 @@ namespace BankingCashCounter
         /// Function for Withdraw money from account.
         /// </summary>
         /// <param name="customer"></param>
-        public void Withdraw(ref LinkedList list)
+        public void Withdraw(ref LinkedList list, int accountNumber)
         {
             try
             {
-                Console.WriteLine("Enter Account Number");
-                accountNumber = Int32.Parse(Console.ReadLine());
                 Customer customer = list.Search(accountNumber);
                 if (customer != null)
                 {
@@ -117,7 +121,7 @@ namespace BankingCashCounter
                     if (customer.Balance - amount > MINIMUM_BALANCE)
                     {
                         customer.Balance = customer.Balance - amount;
-                        Console.WriteLine($"Updated Account Balance is {customer.Balance}");
+                        Console.WriteLine($"Updated Account Balance for ACC. NO. {customer.AccountNumber}  is {customer.Balance}");
                     }
                     else
                     {
@@ -139,15 +143,14 @@ namespace BankingCashCounter
         /// Function to Create Account of Customer and Add it to Linkd List.
         /// </summary>
         /// <param name="list"></param>
-        public void AddCustomer(ref LinkedList list)
+        public void AddCustomer(ref LinkedList list, int accountNumber)
         {
             Customer customer = new Customer();
             try
             {
                 Console.WriteLine("Enter the Name");
                 customer.Name = Console.ReadLine();
-                Console.WriteLine("Enter Account Number");
-                customer.AccountNumber = Int32.Parse(Console.ReadLine());
+                customer.AccountNumber = accountNumber;
                 list.AddNode(customer);
             }
             catch (System.FormatException exception)
@@ -157,10 +160,13 @@ namespace BankingCashCounter
             
         }
 
-        public void RemoveCustomer(ref LinkedList list)
+        /// <summary>
+        /// Function to Remove Customer Account Detail From Linked List
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="accountNumber"></param>
+        public void RemoveCustomer(ref LinkedList list, int accountNumber)
         {
-            Console.WriteLine("Enter Account Number");
-            accountNumber = Int32.Parse(Console.ReadLine());
             Customer customer = list.Search(accountNumber);
             list.Remove(customer);
             Console.WriteLine($"Account of Number {customer.AccountNumber} Deleted");
@@ -170,13 +176,11 @@ namespace BankingCashCounter
         /// Function to Show Account Detail.
         /// </summary>
         /// <param name="list"></param>
-        public void ShowDetail(ref LinkedList list)
+        public void ShowDetail(ref LinkedList list, int accountNumber)
         {
             Console.WriteLine("-----------------------");
             try
             {
-                Console.WriteLine("Enter Account Number");
-                accountNumber = Int32.Parse(Console.ReadLine());
                 Customer customer = list.Search(accountNumber);
                 if (customer != null)
                 {
