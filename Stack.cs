@@ -9,7 +9,6 @@ public class Stack
 
 	public void Push(int data)
 	{
-		Console.WriteLine("Push Called");
 		QNode node = new QNode();
 		node.Data = data;
 		node.Next = null;
@@ -26,7 +25,6 @@ public class Stack
 
 	public void Pop()
 	{
-		Console.WriteLine("Pop Called");
 		if (head == null)
 		{
 			return;

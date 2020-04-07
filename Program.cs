@@ -27,6 +27,7 @@ namespace BankingCashCounter
             Customer customer = new Customer();
             Queue queue = new Queue();
             Stack stack = new Stack();
+            Hashtable hashtable = new Hashtable();
             while (true)
             {
                 Console.WriteLine("-----------------------");
@@ -46,7 +47,8 @@ namespace BankingCashCounter
                     Console.WriteLine("Enter Account Number");
                     accountNumber = Int32.Parse(Console.ReadLine());
                     queue.Enque(accountNumber);                 //Calling Enque to add Customers account number to queue.
-                    stack.Push(accountNumber);                  //Calling Push yo push Customers account number to stcak. 
+                    stack.Push(accountNumber);                  //Calling Push yo push Customers account number to stcak.
+                    hashtable.Add(accountNumber);               //Calling Add to add the Account number to the HashTabble.
                 }
                 catch (System.FormatException e)
                 {
@@ -76,6 +78,7 @@ namespace BankingCashCounter
                 }
                 queue.Deque();              //calling Deque to remove account number from queue.
                 stack.Pop();                //calling Pop to pop out the account number form stack.
+                hashtable.Remove(accountNumber); //Removes Account number from HashTable.
             }
 
         }
